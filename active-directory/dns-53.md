@@ -23,3 +23,10 @@ dig @10.10.10.192 blackfield.local ns
 dig axfr @10.10.10.192 blackfield.local
 ```
 
+## Uso de dnsenum
+
+### Fuzzing de directorios
+
+```null
+dnsenum --dnsserver 10.10.10.224 --threads 30 -f /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt realcorp.htb
+```
