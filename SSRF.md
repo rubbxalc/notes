@@ -1,0 +1,9 @@
+# SSRF
+
+## Abuso de la cabecera ``Location`` en PHP + Inyección SQL por
+```null
+<?php
+   head("Location: http://127.0.0.1:3000/api/v1/users/search?q=);
+?>
+```
+
