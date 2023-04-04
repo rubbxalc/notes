@@ -1,4 +1,4 @@
-# SNMP - 25
+# SMTP - 25
 
 ## Enviar correo
 ```null
