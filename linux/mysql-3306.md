@@ -1,5 +1,11 @@
 # MySQL - 3306
 
+## Conexión
+
+```null
+mysql -h 172.18.0.2 -uqtc -p'clarabibi2019!
+```
+
 ## Listar bases de datos
 ```null
 show databases;

