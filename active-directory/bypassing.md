@@ -98,3 +98,23 @@ except KeyboardInterrupt:
     print()
 ```
 
+## Python
+
+Es posible eliminar la ruta que se obtiene de la ruta actual con ```getcwd()``` pasándole como argumento un path pero con una barra al principio
+
+```null
+python3
+Python 3.11.2 (main, Feb 12 2023, 00:48:52) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import os
+>>> os.path.join(os.getcwd(), "public", "uploads", "test")
+'/home/rubbx/Desktop/HTB/Machines/OpenSource/source/app/app/public/uploads/test'
+```
+
+En este ejemplo con la cadena ```/test```
+
+```null
+>>> os.path.join(os.getcwd(), "public", "uploads", "/test")
+'/test'
+```
+

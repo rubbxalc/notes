@@ -212,3 +212,22 @@ HKU\Volatile Environment
 smbcacls "//10.10.10.103/Department Shares" Users
 ```
 
+## Simple Formulario HTML para subida de archivos
+
+```null
+<form action="test.php" method="post" enctype="multipart/form-data" target="_blank">
+  <p>
+    <input type="file" name="upload">
+    <input type="submit" value="upload">
+  </p>
+</form>
+```
+
+## Port Discovery
+
+## Con netcat
+
+```null
+for port in $(seq 1 65535); do nc 172.17.0.1 $port -zv; done
+```
+

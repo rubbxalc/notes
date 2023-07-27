@@ -86,3 +86,18 @@ Command=ToggleDesktop
 openssl req -newkey rsa:2048 -nodes -keyout amanda.key -out amanda.csr
 ```
 
+## Tráfico de Red
+
+### Obtener clave SSL para importar en WireShark
+
+```null
+hflaccus@carpediem:/$ find \-name \*key 2>/dev/null | grep backdrop
+./etc/ssl/certs/backdrop.carpediem.htb.key
+```
+
+```null
+hflaccus@carpediem:/etc/ssl/certs$ ls | grep backdrop
+backdrop.carpediem.htb.crt
+backdrop.carpediem.htb.key
+```
+

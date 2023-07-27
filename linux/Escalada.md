@@ -55,3 +55,11 @@ Starting download
 Downloaded 33 byte in 0 seconds. (0.04 KB/s)
 ```
 
+## Capabilities
+
+### Enumeración
+
+```null
+getcap -r / 2>/dev/null
+```
+
