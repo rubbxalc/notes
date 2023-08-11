@@ -4,7 +4,6 @@
 
 ```python
 def def_handler(sig, frame):
-    sys.exit(1)
 ```
 
 ## Variables globales
@@ -17,7 +16,7 @@ burp = {'http': 'http://localhost:8080'}
 
 ### Ctrl+C
 
-```null
+```
 signal.signal(signal.SIGINT, def_handler)
 ```
 
@@ -25,19 +24,19 @@ signal.signal(signal.SIGINT, def_handler)
 
 ### Definir sesión
 
-```null
+```
 s = requests.session()
 ```
 
 ### Obtener contenido por GET
 
-```null
+```
 r = s.get(main_url)
 ```
 
 ### Post Data
 
-```null
+```
 post_data = {
     '__VIEWSTATE': viewstate,
     '__EVENTVALIDATION': eventvalidation,
@@ -49,7 +48,7 @@ post_data = {
 
 ### Expresiones regulares
 
-```null
+```
 re.findall(r'id="__VIEWSTATE" value="(.*?)"', r.text)[0]
 ```
 
@@ -57,7 +56,7 @@ re.findall(r'id="__VIEWSTATE" value="(.*?)"', r.text)[0]
 
 ### Texto no en respuesta
 
-```null
+```
 if "Invalid File. Please try again" not in r.text:
     log.info("Extension %s is valid!!" % extension)
 ```
@@ -66,16 +65,15 @@ if "Invalid File. Please try again" not in r.text:
 
 ### Abrir
 
-```null
+```
 f = open("/usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-extensions-lowercase.txt", "rb")
 ```
 
 ### Iterar por cada línea
 
-```null
+```
 for extension in f.readlines():
     extension = extension.decode().strip()
     p1.status("Testing with %s" % extension)
     makeRequests(extension)
 ```
-

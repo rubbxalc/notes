@@ -1,0 +1,9 @@
+# Scripting
+
+[Bash](Scripting%20a973031f2a644f8d94c4a371f29016c0/Bash%2026806f420a6d4b05aaac55d591de74c9.md)
+
+[PHP](Scripting%20a973031f2a644f8d94c4a371f29016c0/PHP%20d7e738e9af21466f9b8bba38942e3495.md)
+
+[Powershell](Scripting%20a973031f2a644f8d94c4a371f29016c0/Powershell%20e5a2c3b673c1438b9b7e004ea9ee4118.md)
+
+[Python](Scripting%20a973031f2a644f8d94c4a371f29016c0/Python%202cf4ff11ee83448e959c53c061166dd4.md)

